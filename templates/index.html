@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TruthLens | AI Fake News Detector</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Background decoration -->
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+
+    <!-- Navigation -->
+    <nav class="navbar">
+
+        <div class="brand">
+            <div class="brand-icon">T</div>
+
+            <div>
+                <h2>TruthLens</h2>
+                <span>AI News Intelligence</span>
+            </div>
+        </div>
+
+        <div class="status">
+            <span class="status-dot"></span>
+            AI Model Online
+        </div>
+
+    </nav>
+
+
+    <!-- Main content -->
+    <main class="container">
+
+        <!-- Hero -->
+        <section class="hero">
+
+            <div class="badge">
+                ✦ MACHINE LEARNING POWERED
+            </div>
+
+            <h1>
+                Detect <span>Fake News</span><br>
+                with AI
+            </h1>
+
+            <p>
+                Analyze news content using natural language processing
+                and machine learning to identify patterns associated
+                with real or fake news.
+            </p>
+
+        </section>
+
+
+        <!-- Main card -->
+        <section class="detector-card">
+
+            <div class="card-header">
+
+                <div>
+                    <h3>Analyze News Article</h3>
+
+                    <p>
+                        Paste a headline or complete article below.
+                    </p>
+                </div>
+
+                <div class="model-badge">
+                    TF-IDF + Logistic Regression
+                </div>
+
+            </div>
+
+
+            <form action="/predict" method="POST" id="newsForm">
+
+                <div class="textarea-container">
+
+                    <textarea
+                        name="news"
+                        id="newsInput"
+                        placeholder="Paste your news article here...
+
+Example:
+The government announced a new initiative today..."
+                        required>{{ news_text if news_text else '' }}</textarea>
+
+                    <div class="textarea-footer">
+
+                        <span id="charCount">
+                            0 characters
+                        </span>
+
+                        <span>
+                            Text analysis enabled
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit" class="analyze-btn" id="analyzeBtn">
+
+                    <span class="btn-icon">⌕</span>
+
+                    <span id="buttonText">
+                        Analyze Article
+                    </span>
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        {% if prediction %}
+
+        <!-- Result -->
+        <section class="result-section">
+
+            <div class="result-card
+                {% if prediction == 'REAL' %}
+                    result-real
+                {% else %}
+                    result-fake
+                {% endif %}">
+
+                <div class="result-icon">
+
+                    {% if prediction == 'REAL' %}
+                        ✓
+                    {% else %}
+                        !
+                    {% endif %}
+
+                </div>
+
+
+                <div class="result-content">
+
+                    <span class="result-label">
+                        AI ANALYSIS RESULT
+                    </span>
+
+                    <h2>
+                        {{ prediction }}
+                    </h2>
+
+                    <p>
+                        The article is classified as
+                        <strong>{{ prediction }}</strong>
+                        based on patterns learned from the training dataset.
+                    </p>
+
+                </div>
+
+
+                <div class="confidence">
+
+                    <div class="confidence-header">
+
+                        <span>Confidence</span>
+
+                        <strong>
+                            {{ confidence }}%
+                        </strong>
+
+                    </div>
+
+                    <div class="progress-bar">
+
+                        <div
+                            class="progress-fill"
+                            style="width: {{ confidence }}%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="disclaimer">
+
+                <span>ⓘ</span>
+
+                <p>
+                    This result is a machine-learning classification,
+                    not a definitive fact-check. Always verify important
+                    information using reliable sources.
+                </p>
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+        <!-- How it works -->
+        <section class="how-section">
+
+            <div class="section-title">
+
+                <span>HOW IT WORKS</span>
+
+                <h2>
+                    From text to insight
+                </h2>
+
+            </div>
+
+
+            <div class="steps">
+
+                <div class="step">
+
+                    <div class="step-number">01</div>
+
+                    <h3>Input</h3>
+
+                    <p>
+                        Enter a news headline or article.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">02</div>
+
+                    <h3>Process</h3>
+
+                    <p>
+                        TF-IDF converts the text into numerical features.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">03</div>
+
+                    <h3>Predict</h3>
+
+                    <p>
+                        Logistic Regression analyzes learned patterns.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">04</div>
+
+                    <h3>Result</h3>
+
+                    <p>
+                        The system returns a classification and confidence.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Model statistics -->
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <strong>92.11%</strong>
+
+                <span>Test Accuracy</span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <strong>6,335</strong>
+
+                <span>News Articles</span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <strong>5,000</strong>
+
+                <span>TF-IDF Features</span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <strong>2</strong>
+
+                <span>Classes</span>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <p>
+            TruthLens · AI-Based Fake News Detection
+        </p>
+
+        <span>
+            Built with Python · Flask · Scikit-learn
+        </span>
+
+    </footer>
+
+
+    <script>
+
+        const textarea = document.getElementById("newsInput");
+        const counter = document.getElementById("charCount");
+
+        textarea.addEventListener("input", function () {
+
+            const length = textarea.value.length;
+
+            counter.textContent =
+                length.toLocaleString() + " characters";
+
+        });
+
+
+        const form = document.getElementById("newsForm");
+        const button = document.getElementById("analyzeBtn");
+        const buttonText = document.getElementById("buttonText");
+
+        form.addEventListener("submit", function () {
+
+            button.disabled = true;
+
+            buttonText.textContent = "Analyzing...";
+
+        });
+
+    </script>
+
+</body>
+
+</html>
